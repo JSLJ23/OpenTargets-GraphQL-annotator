@@ -1,2 +1,2 @@
-# OpenTargets_GraphQL_annotator
+# OpenTargets GraphQL annotator
 Python based tool to retrieve disease-target associations for genes
