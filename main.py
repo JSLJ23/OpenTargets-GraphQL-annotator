@@ -1,5 +1,6 @@
 import target_disease
 import target_chem_probe
+import target_drug
 import pandas as pd
 
 
@@ -35,7 +36,7 @@ def annotate_target_chemical_probe_association(ensembl_csv, ensembl_header, drug
     ensembl_df = pd.read_csv(ensembl_csv)
     rows, columns = ensembl_df.shape
 
-    ensembl_df_annotated = ensembl_df  # Make a copy of the original ensembl_df so as to not overwrite it.
+    ensembl_df_annotated = ensembl_df
 
     for i in range(rows):
         ensembl_id = ensembl_df.loc[i, ensembl_header]
@@ -51,3 +52,19 @@ def annotate_target_chemical_probe_association(ensembl_csv, ensembl_header, drug
 
     return ensembl_df_annotated
 
+
+def annotate_target_known_drug_association(ensembl_csv, ensembl_header):
+    ensembl_df = pd.read_csv(ensembl_csv)
+    rows, columns = ensembl_df.shape
+
+    ensembl_df_annotated = ensembl_df
+
+    for i in range(rows):
+        ensembl_id = ensembl_df.loc[i, ensembl_header]
+        target_drug_association = target_drug.get_target_drugs_association(ensembl_id=ensembl_id)
+        unique_count, all_count = target_drug.extract_associations(target_drug_association)
+
+        ensembl_df_annotated.loc[i, columns+1] = unique_count
+        ensembl_df_annotated.loc[i, columns+2] = all_count
+
+    return ensembl_df_annotated
