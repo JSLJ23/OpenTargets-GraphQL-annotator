@@ -1,12 +1,8 @@
-import opentargets_gql
+import target_disease
 import pandas as pd
-import time
-
-# For usage, add the full name of the csv file of Ensembl_ids to the variable csv_file.
-csv_file = "STM2020_NASH_stages_genes.csv"
 
 
-def annotate_disease_target_association(ensembl_csv, ensembl_header="Ensembl_id", disease="Liver"):
+def annotate_disease_target_association(ensembl_csv, ensembl_header, disease):
     ensembl_df = pd.read_csv(ensembl_csv)
     rows, columns = ensembl_df.shape
 
@@ -15,12 +11,10 @@ def annotate_disease_target_association(ensembl_csv, ensembl_header="Ensembl_id"
     for i in range(rows):
         ensembl_id = ensembl_df.loc[i, ensembl_header]
         disease_target_association = \
-            opentargets_gql.get_target_disease_association(ensembl_id=ensembl_id, disease_name=disease)
+            target_disease.get_target_disease_association(ensembl_id=ensembl_id, disease_name=disease)
         # Get disease target association counts and nested list of disease target associations.
-        counts, nested_list = opentargets_gql.extract_association_scores(disease_target_association)
-        average_association_score = opentargets_gql.aggregate_association_scores(nested_list)
-
-        time.sleep(1)   # Sleep so as not to flood the GraphQL endpoint with request and get timeout.
+        counts, nested_list = target_disease.extract_association_scores(disease_target_association)
+        average_association_score = target_disease.aggregate_association_scores(nested_list)
 
         ensembl_df_annotated.loc[i, columns+1] = average_association_score
         ensembl_df_annotated.loc[i, columns+2] = counts
@@ -36,6 +30,3 @@ def annotate_disease_target_association(ensembl_csv, ensembl_header="Ensembl_id"
     return ensembl_df_annotated
 
 
-result = annotate_disease_target_association(csv_file)
-
-result.to_csv('disease_target_associations.tsv', sep='\t', encoding='utf-8', index=False)
