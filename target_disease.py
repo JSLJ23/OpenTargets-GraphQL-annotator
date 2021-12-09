@@ -48,9 +48,9 @@ def get_target_disease_association(ensembl_id, disease_name, index=0, size=100):
     return api_response_as_json["data"]
 
 
-def extract_association_scores(json_response):
-    associated_diseases_count = json_response["target"]["associatedDiseases"]["count"]
-    association_score_list = json_response["target"]["associatedDiseases"]["rows"]
+def extract_association_scores(json_response_data):
+    associated_diseases_count = json_response_data["target"]["associatedDiseases"]["count"]
+    association_score_list = json_response_data["target"]["associatedDiseases"]["rows"]
     # Using list comprehension to iterate through list of association information, and retrieve disease name,
     # id and score
     association_score_nested_list = \
