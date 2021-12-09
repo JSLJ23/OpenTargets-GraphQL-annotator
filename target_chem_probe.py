@@ -37,9 +37,9 @@ def get_target_chemical_probe_association(ensembl_id):
     return api_response_as_json["data"]
 
 
-def extract_associations(json_response, drug_id_filter):
+def extract_associations(json_response_data, drug_id_filter):
 
-    associated_chemical_probes = json_response["target"]["chemicalProbes"]
+    associated_chemical_probes = json_response_data["target"]["chemicalProbes"]
 
     if len(associated_chemical_probes) >= 0:
 
