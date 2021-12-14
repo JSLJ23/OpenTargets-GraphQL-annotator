@@ -4,7 +4,7 @@ import target_drug
 import pandas as pd
 
 
-def annotate_target_disease_association(ensembl_csv, ensembl_header, disease):
+def annotate_target_disease_association(ensembl_csv, ensembl_header, disease_list):
     ensembl_df = pd.read_csv(ensembl_csv)
     rows, columns = ensembl_df.shape
 
@@ -13,7 +13,7 @@ def annotate_target_disease_association(ensembl_csv, ensembl_header, disease):
     for i in range(rows):
         ensembl_id = ensembl_df.loc[i, ensembl_header]
         target_disease_association = \
-            target_disease.get_target_disease_association(ensembl_id=ensembl_id, disease_name=disease)
+            target_disease.get_target_disease_association(ensembl_id=ensembl_id, disease_keyword_list=disease_list)
         # Get disease target association counts and nested list of disease target associations.
         counts, nested_list = target_disease.extract_association_scores(target_disease_association)
         average_association_score = target_disease.aggregate_association_scores(nested_list)
