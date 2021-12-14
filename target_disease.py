@@ -3,13 +3,13 @@ import requests
 import json
 
 
-def get_target_disease_association(ensembl_id, disease_name_list, index=0, size=100):
+def get_target_disease_association(ensembl_id, disease_keyword_list, index=0, size=100):
     # Set variables object of arguments to be passed to endpoint
     # ensembl_id taken in as elements of a list for multiple queries
 
     api_response_as_json_data_list = []
 
-    for diseases in disease_name_list:
+    for diseases in disease_keyword_list:
         variables = {"ensemblId": ensembl_id,
                      "disease": diseases,
                      "index": index,
